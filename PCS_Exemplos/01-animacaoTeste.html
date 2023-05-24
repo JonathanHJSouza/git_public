@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="utf-8">
+            <script>
+                const INI_SPEED_X = 400;       // velocidade inicial no eixo X em pixels / s
+                const INI_SPEED_Y = -600;      // velocidade inicial no eixo Y (negativa é para cima) em pixels / s
+                const ACCELERATION = 600;      // aceleracao em pixels/s2
+                const TIMEOUT = 25;            // intervalo em milissegundos entre disparos do timer
+                const START_X = 0;             // posição de início no eixo X
+                const START_Y = 300;           // posição de início no eixo Y
+                const LIMIT_Y = 500;           // limite vertical em pixels para interrupção da animação
+
+                var speed_x = INI_SPEED_X;
+                var distance_x = START_X;
+
+                var speed_y = INI_SPEED_Y;
+                var distance_y = START_Y;
+
+                var animate1 = () => {
+                    var el_ball = document.getElementById("ball");
+                    animStep(el_ball);
+                }
+
+                var animStep = (el_ball) => {
+
+                    var sec = TIMEOUT/1000;
+
+                    distance_x += speed_x*sec;
+                    speed_y += ACCELERATION*sec;
+                    distance_y += speed_y*sec + 0.5*ACCELERATION*sec*sec;
+
+                    el_ball.style.left = distance_x + 'px';
+                    el_ball.style.top = distance_y + 'px';
+                    el_ball.style.transform = 'rotate('+(-distance_x)+'deg)';
+
+                    if (distance_y < LIMIT_Y)
+                        setTimeout ( () => { animStep(el_ball); }, TIMEOUT);
+                }
+            </script>
+          </head>
+
+          <body onload="animate1()">
+                
+                <img id="ball" style="position:absolute;top:300px;left:0px;width:80px;height:80px;"
+                     src="https://assets.stickpng.com/thumbs/580b57fcd9996e24bc43c526.png">
+                </img>
+            </body>
+
+        </html>
